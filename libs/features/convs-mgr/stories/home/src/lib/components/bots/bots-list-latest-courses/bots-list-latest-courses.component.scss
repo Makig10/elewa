@@ -2,9 +2,11 @@
 
   .card {
     height: 400px;
-    background-color: #111441;
+    background-color: white;
     color: white;
     border-radius: 10px;
+    border-color: black;
+    outline: 1px solid black;
 
     .card-badge {
       width: fit-content;
