@@ -9,12 +9,19 @@ import { __DateFromStorage } from '@iote/time';
 
 import { Bot } from '@app/model/convs-mgr/bots';
 
+import { BotModule } from '@app/model/convs-mgr/bot-modules';//to access stories related to the bot
+
+
 @Component({
   selector: 'italanta-apps-bots-list-latest-courses',
   templateUrl: './bots-list-latest-courses.component.html',
   styleUrls: ['./bots-list-latest-courses.component.scss'],
 })
 export class BotsListLatestCoursesComponent implements OnInit {
+  botModules: BotModule[];
+  
+
+
 
   @Input() bots$: Observable<Bot[]>;
 
