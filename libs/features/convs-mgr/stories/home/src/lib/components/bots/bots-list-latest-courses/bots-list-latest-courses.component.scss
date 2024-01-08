@@ -11,6 +11,7 @@
     .card-badge {
       width: fit-content;
       display: inline-block;
+      height: 120%;
       padding: 0.25em 0.4em;
       margin: 20px;
       font-size: .9rem;
@@ -31,6 +32,7 @@
       line-height: normal;
       word-wrap: break-word;
       padding: 20px;
+      cursor: pointer;
     }
 
     .open-bot {
