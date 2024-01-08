@@ -3,25 +3,32 @@
   <mat-list-item *ngFor="let bot of bots | slice: 0 : screenWidth < 1500 ? 3 : 4; let i = index" class="card" fxLayout="column" fxLayoutGap="20px"
     fxLayoutAlign="start" [fxFlex]="screenWidth < 1500 ? 32 : 25">
 
+    <div class="open-bot-content">
+      <span class="card-title" fxFlex>
+        {{ bot.name }}
+      </span>
+      <a href="" id="story-link" class ="card-title" fxFlex>
+        <!-- This is a link to the main story related to the specific bot -->
+         To main story
+      </a>
+    </div>
+    <mat-list *ngIf="bots">
+      <mat-list-item *ngFor="let bot of bots">
+        <span class="card-title" fxFlex>
+           Stories list here
+        </span>
+      </mat-list-item>
+    </mat-list>
+   
+    
     <!-- <span class="card-badge">
       {{ "BOTS.BOTS-PAGE.BEGINNER" | transloco }}
     </span> -->
-    <div click="openBot(bot.id!)">
+    <!-- <div class="open-bot-content" (click)="openBot(bot.id!)">
       <span  class="card-title" fxFlex>
         {{ bot.name }}
      </span>
-    </div>
-    
-  
-    <a href="" id="story-link" class ="card-title" fxFlex>
-      <!-- This is a link to the main story related to the specific bot -->
-       To main story
-    </a>
-    
-    
-    
-
-
+    </div> -->
     <!-- <div class="open-bot" fxFlex="50">
        <div class="overlay"></div> 
       
