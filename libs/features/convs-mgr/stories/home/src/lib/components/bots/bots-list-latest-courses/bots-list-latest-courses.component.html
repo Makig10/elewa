@@ -6,10 +6,12 @@
     <!-- <span class="card-badge">
       {{ "BOTS.BOTS-PAGE.BEGINNER" | transloco }}
     </span> -->
-
-    <span class="card-title" fxFlex>
-       {{ bot.name }}
-    </span>
+    <div click="openBot(bot.id!)">
+      <span  class="card-title" fxFlex>
+        {{ bot.name }}
+     </span>
+    </div>
+    
   
     <a href="" id="story-link" class ="card-title" fxFlex>
       <!-- This is a link to the main story related to the specific bot -->
