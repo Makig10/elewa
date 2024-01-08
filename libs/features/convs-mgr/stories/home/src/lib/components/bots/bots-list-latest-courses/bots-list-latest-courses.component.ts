@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit ,OnDestroy, Output} from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map, switchMap, tap } from 'rxjs';
 
 import { orderBy as __orderBy } from 'lodash';
 
@@ -9,8 +9,19 @@ import { __DateFromStorage } from '@iote/time';
 
 import { Bot } from '@app/model/convs-mgr/bots';
 
-import { BotModule } from '@app/model/convs-mgr/bot-modules';//to access stories related to the bot
 
+import { BotModule } from '@app/model/convs-mgr/bot-modules';//to access stories related to the bot
+import { Story } from '@app/model/convs-mgr/stories/main';
+import { ActivatedRoute } from '@angular/router';
+import { SubSink } from 'subsink';
+import { BehaviorSubject,combineLatest } from 'rxjs';
+import { BotMutationEnum } from '@app/model/convs-mgr/bots';
+import { iTalBreadcrumb } from '@app/model/layout/ital-breadcrumb';
+import { BreadcrumbService } from '@app/elements/layout/ital-bread-crumb';
+import { ActionSortingOptions, CreateLessonModalComponent } from '@app/elements/layout/convs-mgr/story-elements';
+import { TIME_AGO } from '@app/features/convs-mgr/conversations/chats';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'italanta-apps-bots-list-latest-courses',
@@ -18,15 +29,19 @@ import { BotModule } from '@app/model/convs-mgr/bot-modules';//to access stories
   styleUrls: ['./bots-list-latest-courses.component.scss'],
 })
 export class BotsListLatestCoursesComponent implements OnInit {
-  botModules: BotModule[];
+  //added code
+  //dataSource = new MatTableDataSource<Story>();
+  @Input() modules$: Observable<BotModule[]>;
+  
+   //added code
+  @Input() bots$: Observable<Bot[]>;
+
   
 
 
-
-  @Input() bots$: Observable<Bot[]>;
-
   defaultImageUrl = `https://res.cloudinary.com/dyl3rncv3/image/upload/v1695626490/photo-1541746972996-4e0b0f43e02a_o9ukmi.jpg`
-
+  modules: BotModule[];
+  
   bots: Bot[];
 
   screenWidth: number;
@@ -36,15 +51,24 @@ export class BotsListLatestCoursesComponent implements OnInit {
   ngOnInit(): void {
 
     this.screenWidth = window.innerWidth;
+    if(this.modules){
+      
+      console.log(`Here are the modules:${this.modules}`)
+    }else{
+      console.log( 'No module data')
+    }
 
     if (this.bots$) {
       this.bots$.pipe(
         map((s) => __orderBy(s,(a) => __DateFromStorage(a.createdOn as Date).unix(), 'desc')),
         tap((s) => this.bots = s)).subscribe();
     }
+    
   }
-
   openBot(id: string) {
+    console.log("openBot div clicked");
     this._router$$.navigate(['bots', id]);
   }
 }
+
+ 
