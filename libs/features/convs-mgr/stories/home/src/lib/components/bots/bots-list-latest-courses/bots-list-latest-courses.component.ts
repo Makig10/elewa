@@ -32,13 +32,14 @@ export class BotsListLatestCoursesComponent implements OnInit {
   //added code
   //dataSource = new MatTableDataSource<Story>();
   @Input() modules$: Observable<BotModule[]>;
+  @Input() stories: Story[] = [];
+
+  openMainStory(id: string) {
+    this._router$$.navigate(['stories', id]);
+  }
   
-   //added code
+   //end of added code
   @Input() bots$: Observable<Bot[]>;
-
-  
-
-
   defaultImageUrl = `https://res.cloudinary.com/dyl3rncv3/image/upload/v1695626490/photo-1541746972996-4e0b0f43e02a_o9ukmi.jpg`
   modules: BotModule[];
   
@@ -46,17 +47,25 @@ export class BotsListLatestCoursesComponent implements OnInit {
 
   screenWidth: number;
 
-  constructor(private _router$$: Router) {}
+  constructor(private _router$$: Router,
+              private _dialog: MatDialog   //added                      
+    ) {}
 
   ngOnInit(): void {
 
     this.screenWidth = window.innerWidth;
-    if(this.modules){
-      
-      console.log(`Here are the modules:${this.modules}`)
-    }else{
-      console.log( 'No module data')
+    if (this.modules) {
+      console.log(`Here are the modules: ${this.modules}`);
+    } else {
+      console.log('No module data');
     }
+  
+    if (this.stories) {
+      console.log(`Here are the stories: ${this.stories}`);
+    } else {
+      console.log('No story data');
+    }
+  
 
     if (this.bots$) {
       this.bots$.pipe(
