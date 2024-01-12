@@ -1,27 +1,31 @@
-<mat-list *ngIf="bots" class="cards" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px"
+<mat-list *ngIf="bots && stories && modules"class="cards" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px"
   fxFlex>
   <mat-list-item *ngFor="let bot of bots | slice: 0 : screenWidth < 1500 ? 3 : 4; let i = index" class="card" fxLayout="column" fxLayoutGap="20px"
     fxLayoutAlign="start" [fxFlex]="screenWidth < 1500 ? 32 : 25">
 
-    <div class="open-bot-content" (click)="openBot(bot.id!)" *ngIf="stories && bot.story">
+    <div class="open-bot-content" (click)="openBot(bot.id!)">
+     <!-- *ngIf="stories && bot.story"> -->
       <span class="card-title" fxFlex>
         {{ bot.name }}
       </span>
-      <a href="" id="story-link" class ="card-title" fxFlex (click)="openMainStory(bot.story.id!)">
+      <a href="" id="story-link" class ="card-title" fxFlex >
+        <!-- (click)="openMainStory(bot.story.id!)"> -->
         <!-- This is a link to the main story related to the specific bot -->
          To main story
       </a>
     </div>
-    <mat-list *ngIf="bots">
-      <mat-list-item *ngFor="let module of modules">
+    <!-- Nested list for stories -->
+    <mat-list *ngIf="stories && stories.length">
+      <mat-list-item *ngFor="let story of stories">
+        <!-- Check if the story belongs to the current bot -->
         <span class="card-title" fxFlex>
-           {{modules}}
-        </span>
+          {{ story.name }}
+        </span>s
       </mat-list-item>
     </mat-list>
-   
-    
-    <!-- <span class="card-badge">
+ </mat-list-item>
+</mat-list>
+<!-- <span class="card-badge">
       {{ "BOTS.BOTS-PAGE.BEGINNER" | transloco }}
     </span> -->
     <!-- <div class="open-bot-content" (click)="openBot(bot.id!)">
@@ -40,6 +44,3 @@
         </button>
       </div>
     </div> -->
-
-  </mat-list-item>
-</mat-list>

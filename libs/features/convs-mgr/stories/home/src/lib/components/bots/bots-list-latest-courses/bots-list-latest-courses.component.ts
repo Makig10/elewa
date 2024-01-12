@@ -31,8 +31,12 @@ import { MatTableDataSource } from '@angular/material/table';
 export class BotsListLatestCoursesComponent implements OnInit {
   //added code
   //dataSource = new MatTableDataSource<Story>();
-  @Input() modules$: Observable<BotModule[]>;
+  @Input() modules: BotModule[]= [];
+  //Input() modules$: Observable<BotModule[]>;
+  //modules= BotModule[];
   @Input() stories: Story[] = [];
+  //@Input() stories$: Observable<Story[]>;
+  //stories = Story[];
 
   openMainStory(id: string) {
     this._router$$.navigate(['stories', id]);
@@ -41,7 +45,6 @@ export class BotsListLatestCoursesComponent implements OnInit {
    //end of added code
   @Input() bots$: Observable<Bot[]>;
   defaultImageUrl = `https://res.cloudinary.com/dyl3rncv3/image/upload/v1695626490/photo-1541746972996-4e0b0f43e02a_o9ukmi.jpg`
-  modules: BotModule[];
   
   bots: Bot[];
 
@@ -56,12 +59,14 @@ export class BotsListLatestCoursesComponent implements OnInit {
     this.screenWidth = window.innerWidth;
     if (this.modules) {
       console.log(`Here are the modules: ${this.modules}`);
+
     } else {
       console.log('No module data');
     }
   
     if (this.stories) {
       console.log(`Here are the stories: ${this.stories}`);
+      
     } else {
       console.log('No story data');
     }
