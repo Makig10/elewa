@@ -1,5 +1,6 @@
-<mat-list *ngIf="bots && stories && modules"class="cards" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px"
+<mat-list *ngIf="bots" class="cards" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px"
   fxFlex>
+  <!-- modules && stories -->
   <mat-list-item *ngFor="let bot of bots | slice: 0 : screenWidth < 1500 ? 3 : 4; let i = index" class="card" fxLayout="column" fxLayoutGap="20px"
     fxLayoutAlign="start" [fxFlex]="screenWidth < 1500 ? 32 : 25">
 
@@ -15,11 +16,13 @@
       </a>
     </div>
     <!-- Nested list for stories -->
-    <mat-list *ngIf="stories && stories.length">
-      <mat-list-item *ngFor="let story of stories">
+    <!-- <mat-list *ngIf="stories$ && stories$.length"> -->
+    <mat-list>
+      <!-- <mat-list-item *ngFor="let story of stories"> -->
+      <mat-list-item>
         <!-- Check if the story belongs to the current bot -->
         <span class="card-title" fxFlex>
-          {{ story.name }}
+           story.name 
         </span>s
       </mat-list-item>
     </mat-list>
