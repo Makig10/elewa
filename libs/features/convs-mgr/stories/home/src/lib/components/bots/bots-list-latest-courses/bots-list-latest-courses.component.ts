@@ -10,14 +10,11 @@ import { __DateFromStorage } from '@iote/time';
 import { Bot } from '@app/model/convs-mgr/bots';
 
 //import { ActivatedRoute } from '@angular/router'; //to get the botId
-import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
-import { forkJoin } from 'rxjs';
+
 import { BotModule } from '@app/model/convs-mgr/bot-modules';//to access stories related to the bot
 import { BotModulesStateService } from '@app/state/convs-mgr/modules';
 import { StoryStateService } from '@app/state/convs-mgr/stories';
 import { Story } from '@app/model/convs-mgr/stories/main';
-import { BotsStore } from 'libs/state/convs-mgr/bots/src/lib/stores/bots.store';
 
 import { MatDialog } from '@angular/material/dialog';
 
@@ -38,7 +35,6 @@ export class BotsListLatestCoursesComponent implements OnInit {
 
   @Input() bots$: Observable<Bot[]>;
   defaultImageUrl = `https://res.cloudinary.com/dyl3rncv3/image/upload/v1695626490/photo-1541746972996-4e0b0f43e02a_o9ukmi.jpg`
-  
   bots: Bot[];
 
   botId:string | undefined;
@@ -48,14 +44,13 @@ export class BotsListLatestCoursesComponent implements OnInit {
   constructor(private _router$$: Router,
               private _dialog: MatDialog,
               private botModulesService: BotModulesStateService , //added 
-              private storyStateService: StoryStateService,
-              private _BotsStore: BotsStore,
+            
             //  private route: ActivatedRoute // Inject ActivatedRoute                      
     ) {}
 
   ngOnInit(): void {
   this.screenWidth = window.innerWidth;
-  modules:BotModule[];
+
      
   if (this.bots$) {
     this.bots$.pipe(
@@ -74,18 +69,58 @@ export class BotsListLatestCoursesComponent implements OnInit {
     );
   }
 
-    this.modules$ = this.botModulesService.getBotModules();
-    this.modules$.subscribe(modules => {
-      if (modules && modules.length > 0) {
+  this.modules$ = this.botModulesService.getBotModules();
+  this.modules$.subscribe(modules => {
+    if (modules && modules.length > 0) {
       console.log('Modules emitted:', modules);
       this.modules = modules;
-          }else {
-           console.log('No module data');
-          }
+      // Assuming you want to fetch modules for each parentBot
+      this.fetchModulesForBots(modules.map(module => module.parentBot));
+    } else {
+      console.log('No module data');
+    }
+  });
+}
+
+fetchModulesForBots(parentBotIds: string[]): void {
+  if (parentBotIds && parentBotIds.length > 0) {
+    parentBotIds.forEach(parentBotId => {
+      this.botModulesService.getBotModulesFromParentBot(parentBotId).subscribe(
+        (response: BotModule[]) => {
+          console.log(`Modules for parentBot ${parentBotId}:`, response);
+          // You may want to merge the fetched modules into the existing modules array
+          // this.modules = this.modules.concat(response);
+        },
+        error => {
+          console.error(`Error fetching modules for parentBot ${parentBotId}:`, error);
+        }
+      );
     });
+  }
 
-    if(modules )
+  
+    // this.modules$ = this.botModulesService.getBotModules();
+    // this.modules$.subscribe(modules => {
+    //   if (modules && modules.length > 0) {
+    //   console.log('Modules emitted:', modules);
+    //   this.modules = modules;
+    //       }else {
+    //        console.log('No module data');
+    //       }
+    // });
 
+    // if(this.modules){
+    //   moduleIds= this.modules.map((modules)=>{module.parentBot})
+    //   this.botModulesService.getBotModulesFromParentBot(moduleId[i]).subscribe(
+    //     (response:BotModule[])=>{
+    //       this.modules=response;
+    //     }
+    //   )
+    // }
+   
+  
+
+   
     
   
   }
