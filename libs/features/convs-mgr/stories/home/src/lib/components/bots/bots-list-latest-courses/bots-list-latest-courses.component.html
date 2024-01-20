@@ -12,11 +12,13 @@
 
       <!-- Nested list for modules -->
       <div id="stories-div">
-        <mat-list *ngIf="bot.id === filteredModules[i].parentBot">
-          <mat-list-item *ngFor="let module of modules" >
-            <span class="card-title" fxFlex>{{ filteredModules[i].name }}</span>
-          </mat-list-item>
-        </mat-list>
+        <div *ngFor="let filteredModule of filteredModules">
+          <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot">
+            <mat-list-item *ngFor="let module of filteredModule.modulesArr">
+              <span class="card-title" fxFlex>{{ module.name }}</span>
+            </mat-list-item>
+          </mat-list>
+        </div>
       </div>
 
      </div>

@@ -18,7 +18,11 @@ import { Story } from '@app/model/convs-mgr/stories/main';
 
 import { MatDialog } from '@angular/material/dialog';
 
-
+interface FilteredModule {
+  
+  modulesArr: BotModule[];
+  
+}
 @Component({
   selector: 'italanta-apps-bots-list-latest-courses',
   templateUrl: './bots-list-latest-courses.component.html',
@@ -29,7 +33,8 @@ export class BotsListLatestCoursesComponent implements OnInit {
 
   modules$: Observable<BotModule[]>;
   modules:BotModule[];
-  filteredModules:BotModule[];
+  filteredModules:FilteredModule[];
+  //modulesArr:BotModule[];
   @Input() stories$: Observable<Story[]>;
   stories:Story[];
   
@@ -85,13 +90,16 @@ export class BotsListLatestCoursesComponent implements OnInit {
  fetchModulesForBots(parentBotIds: string[]): void {
     if (parentBotIds && parentBotIds.length > 0) {
       this.filteredModules = []; // Clear the array before populating
+     // this.modulesArr=[];
       parentBotIds.forEach((parentBotId, i) => {
         this.botModulesService.getBotModulesFromParentBot(parentBotId).subscribe(
-          (response: BotModule[]) => {
-            console.log(`Modules for parentBot ${parentBotId}:`, response);
+          (modulesArr: BotModule[]) => {
+            console.log(`Modules for parentBot ${parentBotId}:`, modulesArr);
             // Assuming you want to push the first module to filteredModules
-            if (response.length > 0) {
-              this.filteredModules.push(response[0]);
+            if (modulesArr.length > 0) {
+              console.log('modulesArr: ',modulesArr );
+              this.filteredModules.push({modulesArr});
+              console.log('filteredModules: ',this.filteredModules);
             }
           },
           (error) => {
