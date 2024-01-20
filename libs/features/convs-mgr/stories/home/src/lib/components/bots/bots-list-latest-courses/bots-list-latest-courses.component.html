@@ -2,7 +2,7 @@
   <mat-list *ngIf="bots" class="cards" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px" fxFlex>
     <mat-list-item *ngFor="let bot of bots | slice: 0 : screenWidth < 1500 ? 3 : 4; let i = index"
       class="card" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start" [fxFlex]="screenWidth < 1500 ? 32 : 25">
-
+     <div *ngIf="bots && modules">
       <div class="open-bot-content" (click)="openBot(bot.id!)">
         <span class="card-title" fxFlex>{{ bot.name }}</span>
         <a id="story-link" [routerLink]="['/main-story', bot.id!]" class="card-title" fxFlex>
@@ -12,12 +12,15 @@
 
       <!-- Nested list for modules -->
       <div id="stories-div">
-        <mat-list *ngIf="modules && modules.length">
-          <mat-list-item *ngFor="let module of modules">
-            <span class="card-title" fxFlex>{{ module.name }}</span>
+        <mat-list *ngIf="bot.id === filteredModules[i].parentBot">
+          <mat-list-item *ngFor="let module of modules" >
+            <span class="card-title" fxFlex>{{ filteredModules[i].name }}</span>
           </mat-list-item>
         </mat-list>
       </div>
+
+     </div>
+      
     </mat-list-item>
   </mat-list>
 </div>

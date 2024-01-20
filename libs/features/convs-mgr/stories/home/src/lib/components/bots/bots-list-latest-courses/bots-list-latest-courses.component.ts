@@ -29,6 +29,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
 
   modules$: Observable<BotModule[]>;
   modules:BotModule[];
+  filteredModules:BotModule[];
   @Input() stories$: Observable<Story[]>;
   stories:Story[];
   
@@ -81,22 +82,39 @@ export class BotsListLatestCoursesComponent implements OnInit {
     }
   });
 }
+ fetchModulesForBots(parentBotIds: string[]): void {
+    if (parentBotIds && parentBotIds.length > 0) {
+      this.filteredModules = []; // Clear the array before populating
+      parentBotIds.forEach((parentBotId, i) => {
+        this.botModulesService.getBotModulesFromParentBot(parentBotId).subscribe(
+          (response: BotModule[]) => {
+            console.log(`Modules for parentBot ${parentBotId}:`, response);
+            // Assuming you want to push the first module to filteredModules
+            if (response.length > 0) {
+              this.filteredModules.push(response[0]);
+            }
+          },
+          (error) => {
+            console.error(`Error fetching modules for parentBot ${parentBotId}:`, error);
+          }
+        );
+      });
+    }
 
-fetchModulesForBots(parentBotIds: string[]): void {
+/*fetchModulesForBots(parentBotIds: string[]): void {
   if (parentBotIds && parentBotIds.length > 0) {
     parentBotIds.forEach(parentBotId => {
       this.botModulesService.getBotModulesFromParentBot(parentBotId).subscribe(
-        (response: BotModule[]) => {
-          console.log(`Modules for parentBot ${parentBotId}:`, response);
-          // You may want to merge the fetched modules into the existing modules array
-          // this.modules = this.modules.concat(response);
+        (filteredModules: BotModule[]) => {
+          console.log(`Modules for parentBot ${parentBotId}:`, filteredModules);
+          
         },
         error => {
           console.error(`Error fetching modules for parentBot ${parentBotId}:`, error);
         }
       );
     });
-  }
+  }*/
 
   
     // this.modules$ = this.botModulesService.getBotModules();
