@@ -1,7 +1,7 @@
 .cards {
 
   .card {
-    height: 400px;
+    height:fit-content;
     background-color: white;
     color: white;
     border-radius: 10px;
@@ -37,11 +37,12 @@
     }
     #stories-div {
   
-    height:200px;
+    height:100%;
     border: 1px solid black;
     
     
     }
+   
 
     .open-bot {
       position: relative;
@@ -90,6 +91,11 @@
 }
 #story-link{
   color: black;
+}
+#new-story-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .overlay {
