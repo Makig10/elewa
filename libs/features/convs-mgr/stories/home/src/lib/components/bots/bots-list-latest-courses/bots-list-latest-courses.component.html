@@ -1,7 +1,7 @@
 <div>
   <mat-list *ngIf="bots" class="cards" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="30px" fxFlex>
-    <mat-list-item *ngFor="let bot of bots | slice: 0 : screenWidth < 1500 ? 3 : 4; let i = index"
-      class="card" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start" [fxFlex]="screenWidth < 1500 ? 32 : 25">
+    <mat-list-item *ngFor="let bot of bots | slice: 0 : screenWidth < 1500 ? 5 : 6; let i = index"
+      class="card" fxLayout="column" fxLayoutGap="20px" fxLayoutAlign="start" >
      <div *ngIf="bots && modules">
       <div class="open-bot-content" (click)="openBot(bot.id!)">
         <span class="card-title" fxFlex>{{ bot.name }}</span>
@@ -13,16 +13,24 @@
       <!-- Nested list for modules -->
       <div id="stories-div">
         <div *ngFor="let filteredModule of filteredModules">
-          <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot">
+          <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot" fxLayout="column">
             <mat-list-item *ngFor="let module of filteredModule.modulesArr">
               <span class="card-title" fxFlex>{{ module.name }}</span>
             </mat-list-item>
-          </mat-list>
+           </mat-list>
+
         </div>
+        <span class="card-title" fxFlex>
+          <button mat-fab class="btn-add">
+            <i class="fas fa-plus"></i>
+          </button>
+          New Story 
+        </span>
+          
       </div>
 
      </div>
-      
+     
     </mat-list-item>
   </mat-list>
 </div>
