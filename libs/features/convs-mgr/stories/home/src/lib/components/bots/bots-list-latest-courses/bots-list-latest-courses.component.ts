@@ -97,9 +97,15 @@ export class BotsListLatestCoursesComponent implements OnInit {
             console.log(`Modules for parentBot ${parentBotId}:`, modulesArr);
             // Assuming you want to push the first module to filteredModules
             if (modulesArr.length > 0) {
-              console.log('modulesArr: ',modulesArr );
+              const isDuplicate = this.filteredModules.some(entry => 
+                JSON.stringify(entry.modulesArr) === JSON.stringify(modulesArr)
+              );
+              if(!isDuplicate){
+                console.log('modulesArr: ',modulesArr );
               this.filteredModules.push({modulesArr});
               console.log('filteredModules: ',this.filteredModules);
+              }
+              
             }
           },
           (error) => {
@@ -109,46 +115,6 @@ export class BotsListLatestCoursesComponent implements OnInit {
       });
     }
 
-/*fetchModulesForBots(parentBotIds: string[]): void {
-  if (parentBotIds && parentBotIds.length > 0) {
-    parentBotIds.forEach(parentBotId => {
-      this.botModulesService.getBotModulesFromParentBot(parentBotId).subscribe(
-        (filteredModules: BotModule[]) => {
-          console.log(`Modules for parentBot ${parentBotId}:`, filteredModules);
-          
-        },
-        error => {
-          console.error(`Error fetching modules for parentBot ${parentBotId}:`, error);
-        }
-      );
-    });
-  }*/
-
-  
-    // this.modules$ = this.botModulesService.getBotModules();
-    // this.modules$.subscribe(modules => {
-    //   if (modules && modules.length > 0) {
-    //   console.log('Modules emitted:', modules);
-    //   this.modules = modules;
-    //       }else {
-    //        console.log('No module data');
-    //       }
-    // });
-
-    // if(this.modules){
-    //   moduleIds= this.modules.map((modules)=>{module.parentBot})
-    //   this.botModulesService.getBotModulesFromParentBot(moduleId[i]).subscribe(
-    //     (response:BotModule[])=>{
-    //       this.modules=response;
-    //     }
-    //   )
-    // }
-   
-  
-
-   
-    
-  
   }
 
 
