@@ -49,6 +49,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
   bots: Bot[];
 
   botId:string | undefined;
+  moduleId:string | undefined;
 
   screenWidth: number;
 
@@ -167,7 +168,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
         }
       );
     });
-  } 
+   } 
 
 
   
