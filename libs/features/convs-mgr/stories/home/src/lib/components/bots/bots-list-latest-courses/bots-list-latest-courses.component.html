@@ -28,11 +28,14 @@
       </div>
 
       <!-- Nested list for modules -->
-      <div id="stories-div">
-        <div *ngFor="let filteredModule of filteredModules">
-          <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot" fxLayout="column">
-            <mat-list-item *ngFor="let module of filteredModule.modulesArr">
-              <span class="card-title" fxFlex>{{ module.name }}</span>
+      <div id="stories-div" *ngFor="let filteredModule of filteredModules">
+        <div *ngFor="let filteredStory of filteredStories" >
+          <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot && filteredModule.modulesArr[0].id === filteredStory.storiesArr[0]?.parentModule " fxLayout="column">
+            <mat-list-item *ngFor="let module of filteredModule.modulesArr ">
+              <div *ngFor=" let story of filteredStory.storiesArr">
+                <span class="card-title" fxFlex>story:{{ story.name }}</span>
+                <span class="card-title" fxFlex>module:{{ module.name }}</span>
+              </div>
             </mat-list-item>
             <div id="new-story-div">
               <span class="card-title" fxFlex>
