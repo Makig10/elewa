@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable, map, switchMap, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 
 import { orderBy as __orderBy } from 'lodash';
 
@@ -23,6 +23,11 @@ interface FilteredModule {
   modulesArr: BotModule[];
   
 }
+interface FilteredStory{
+
+  storiesArr:Story[];
+
+}
 @Component({
   selector: 'italanta-apps-bots-list-latest-courses',
   templateUrl: './bots-list-latest-courses.component.html',
@@ -34,8 +39,8 @@ export class BotsListLatestCoursesComponent implements OnInit {
   modules$: Observable<BotModule[]>;
   modules:BotModule[];
   filteredModules:FilteredModule[];
-  //modulesArr:BotModule[];
-  @Input() stories$: Observable<Story[]>;
+  filteredStories:FilteredStory[];
+  stories$: Observable<Story[]>;
   stories:Story[];
   
 
@@ -49,7 +54,8 @@ export class BotsListLatestCoursesComponent implements OnInit {
 
   constructor(private _router$$: Router,
               private _dialog: MatDialog,
-              private botModulesService: BotModulesStateService , //added 
+              private botModulesService: BotModulesStateService ,
+              private storyStateService:StoryStateService
             
             //  private route: ActivatedRoute // Inject ActivatedRoute                      
     ) {}
@@ -74,7 +80,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
       
     );
   }
-
+ 
   this.modules$ = this.botModulesService.getBotModules();
   this.modules$.subscribe(modules => {
     if (modules && modules.length > 0) {
@@ -82,11 +88,27 @@ export class BotsListLatestCoursesComponent implements OnInit {
       this.modules = modules;
       // Assuming you want to fetch modules for each parentBot
       this.fetchModulesForBots(modules.map(module => module.parentBot));
+    
     } else {
       console.log('No module data');
     }
   });
-}
+  this.stories$=this.storyStateService.getStories();
+  this.stories$.subscribe(stories=>{
+    if(stories && stories.length > 0){
+     console.log('Stories emitted', stories);
+     this.stories=stories;
+     //fetching stories for each parentModule(which are related to the bot)
+     const parentModuleIds = stories.map(story => story.parentModule).filter(id => !!id) as string[];
+     this.fetchStoriesForChildModules(parentModuleIds);
+    }
+  });
+
+
+
+  }
+  
+
  fetchModulesForBots(parentBotIds: string[]): void {
     if (parentBotIds && parentBotIds.length > 0) {
       this.filteredModules = []; // Clear the array before populating
@@ -114,8 +136,38 @@ export class BotsListLatestCoursesComponent implements OnInit {
         );
       });
     }
+   }
+   
+ 
 
-  }
+
+   fetchStoriesForChildModules(parentModuleIds:string[]):void{
+    if (parentModuleIds && parentModuleIds.length > 0) {
+      this.filteredStories = []; // Clear the array before populating
+    }
+    parentModuleIds.forEach((parentModuleId, i) => {
+      this.storyStateService.getStoriesFromParentModule(parentModuleId).subscribe(
+        (storiesArr: Story[]) => {
+          console.log(`Stories for parentModule ${parentModuleId}:`, storiesArr);
+          // Assuming you want to push the first module to filteredModules
+          if (storiesArr.length > 0) {
+            const isDuplicate = this.filteredStories.some(entry => 
+              JSON.stringify(entry.storiesArr) === JSON.stringify(storiesArr)
+            );
+            if(!isDuplicate){
+              console.log('storiesArr: ',storiesArr );
+            this.filteredStories.push({storiesArr});
+            console.log('filteredStories: ',this.filteredStories);
+            }
+            
+          }
+        },
+        (error) => {
+          console.error(`Error fetching stories for parentBot(through parentModule) ${parentModuleId}:`, error);
+        }
+      );
+    });
+  } 
 
 
   
