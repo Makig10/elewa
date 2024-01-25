@@ -126,6 +126,17 @@ export class BotsListLatestCoursesComponent implements OnInit {
   openMainStory(id: string) {
     this._router$$.navigate(['stories', id]);
   }
+  openStory(){
+    console.log("mat-menu btn clicked");
+  }
+  editStory(){
+    console.log("mat-menu btn clicked");
+  }
+  deleteStory(){
+    console.log("mat-menu btn clicked");
+  }
+
+
 
 
 }
