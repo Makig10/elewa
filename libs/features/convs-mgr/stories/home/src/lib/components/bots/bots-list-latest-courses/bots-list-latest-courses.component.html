@@ -9,13 +9,21 @@
         <a id="story-link" [routerLink]="['/main-story', bot.id!]" class="card-title" fxFlex>
           To main story  
         </a>
-        <div id="mat-menu" class="card-title">
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="openStory()" > Open </button>
-            <button mat-menu-item (click)="editStory()" > Edit </button>
-            <button mat-menu-item (click)="deleteStory()"> {{'ASSESSMENTS.BUTTON.DELETE' | transloco}}</button>
-          </mat-menu>
+        <div class="menu-btn" class="card-title">
+           <button mat-button [matMenuTriggerFor]="menu">
+            <i class="fa-solid fa-ellipsis-vertical menu-tooltip"></i>
+           </button>
+
+          <div id="mat-menu" class="card-title">
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="openStory()" > Open </button>
+              <button mat-menu-item (click)="editStory()" > Edit </button>
+              <button mat-menu-item (click)="deleteStory()"> {{'ASSESSMENTS.BUTTON.DELETE' | transloco}}</button>
+            </mat-menu>
+          </div>
+
         </div>
+        
         
       </div>
 
