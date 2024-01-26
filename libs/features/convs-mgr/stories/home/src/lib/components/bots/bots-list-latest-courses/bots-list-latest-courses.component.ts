@@ -9,14 +9,15 @@ import { __DateFromStorage } from '@iote/time';
 
 import { Bot } from '@app/model/convs-mgr/bots';
 
-//import { ActivatedRoute } from '@angular/router'; //to get the botId
 
+import { BotMutationEnum } from '@app/model/convs-mgr/bots';
 import { BotModule } from '@app/model/convs-mgr/bot-modules';//to access stories related to the bot
 import { BotModulesStateService } from '@app/state/convs-mgr/modules';
 import { StoryStateService } from '@app/state/convs-mgr/stories';
 import { Story } from '@app/model/convs-mgr/stories/main';
-
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateLessonModalComponent } from '@app/elements/layout/convs-mgr/story-elements';
 
 interface FilteredModule {
   
@@ -28,6 +29,7 @@ interface FilteredStory{
   storiesArr:Story[];
 
 }
+
 @Component({
   selector: 'italanta-apps-bots-list-latest-courses',
   templateUrl: './bots-list-latest-courses.component.html',
@@ -42,6 +44,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
   filteredStories:FilteredStory[];
   stories$: Observable<Story[]>;
   stories:Story[];
+  selectedModuleId: string ;
   
 
   @Input() bots$: Observable<Bot[]>;
@@ -56,9 +59,9 @@ export class BotsListLatestCoursesComponent implements OnInit {
   constructor(private _router$$: Router,
               private _dialog: MatDialog,
               private botModulesService: BotModulesStateService ,
-              private storyStateService:StoryStateService
-            
-            //  private route: ActivatedRoute // Inject ActivatedRoute                      
+              private storyStateService:StoryStateService,
+              private route: ActivatedRoute,
+                                
     ) {}
 
   ngOnInit(): void {
@@ -158,6 +161,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
             if(!isDuplicate){
               console.log('storiesArr: ',storiesArr );
             this.filteredStories.push({storiesArr});
+            
             console.log('filteredStories: ',this.filteredStories);
             }
             
@@ -168,6 +172,7 @@ export class BotsListLatestCoursesComponent implements OnInit {
         }
       );
     });
+    
    } 
 
 
@@ -181,6 +186,19 @@ export class BotsListLatestCoursesComponent implements OnInit {
   }
   openStory(){
     console.log("mat-menu btn clicked");
+  }
+  
+  createStory(moduleId: string) {
+    console.log("new story btn clicked");
+    const dialogData = {
+      botMode: BotMutationEnum.CreateMode,
+      botModId: moduleId,
+    };
+
+    this._dialog.open(CreateLessonModalComponent, {
+      minWidth: '600px',
+      data: dialogData,
+    });
   }
   editStory(){
     console.log("mat-menu btn clicked");
