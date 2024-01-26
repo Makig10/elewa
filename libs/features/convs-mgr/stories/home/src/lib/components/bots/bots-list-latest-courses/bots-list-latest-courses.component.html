@@ -27,25 +27,29 @@
         
       </div>
 
-      <!-- Nested list for modules -->
-      <div id="stories-div" *ngFor="let filteredModule of filteredModules">
-        <div *ngFor="let filteredStory of filteredStories" >
-          <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot && filteredModule.modulesArr[0].id === filteredStory.storiesArr[0]?.parentModule " fxLayout="column">
-            <mat-list-item *ngFor="let module of filteredModule.modulesArr ">
-              <div *ngFor=" let story of filteredStory.storiesArr">
-                <span class="card-title" fxFlex>story:{{ story.name }}</span>
-                <span class="card-title" fxFlex>module:{{ module.name }}</span>
+      <!-- Nested list for stories and modules -->
+      <div id="stories-div" *ngIf="filteredModules && filteredModules.length && filteredStories && filteredStories.length">
+        <div *ngFor="let filteredModule of filteredModules">
+          <div *ngFor="let filteredStory of filteredStories">
+            <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot " fxLayout="column">
+              <div *ngFor="let module of filteredModule.modulesArr">
+                <mat-list-item *ngFor="let story of filteredStory.storiesArr">
+                  <div *ngIf="module.id===story.parentModule">
+                    <span class="card-title" fxFlex>story:{{ story.name }}</span>
+                    <span class="card-title" fxFlex>module:{{ module.name }}</span>
+                  </div>
+                </mat-list-item>
+                <div id="new-story-div">
+                  <span class="card-title" fxFlex>
+                    <button mat-fab class="btn-add">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    New Story
+                  </span>
+                </div>
               </div>
-            </mat-list-item>
-            <div id="new-story-div">
-              <span class="card-title" fxFlex>
-                <button mat-fab class="btn-add">
-                  <i class="fas fa-plus"></i>
-                </button>
-                New Story 
-              </span>
-            </div>
-           </mat-list>
+            </mat-list>
+          </div>
         </div>
       </div>
       <!-- from "bot-modules-grid-view.component.html" -->
