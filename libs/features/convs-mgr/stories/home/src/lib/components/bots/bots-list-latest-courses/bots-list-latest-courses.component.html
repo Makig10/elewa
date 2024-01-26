@@ -31,7 +31,7 @@
       <div id="stories-div" *ngIf="filteredModules && filteredModules.length && filteredStories && filteredStories.length">
         <div *ngFor="let filteredModule of filteredModules">
           <div *ngFor="let filteredStory of filteredStories">
-            <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot " fxLayout="column">
+            <mat-list *ngIf="bot.id === filteredModule.modulesArr[0]?.parentBot" fxLayout="column">
               <div *ngFor="let module of filteredModule.modulesArr">
                 <mat-list-item *ngFor="let story of filteredStory.storiesArr">
                   <div *ngIf="module.id===story.parentModule">
@@ -45,7 +45,15 @@
         </div>
         <div id="new-story-div">
           <span class="card-title" fxFlex>
-            <button mat-fab class="btn-add">
+            <mat-form-field>
+              <mat-label>Select Module</mat-label>
+              <mat-select [(value)]="selectedModuleId">
+                <mat-option *ngFor="let module of filteredModules[0]?.modulesArr" [value]="module.id">
+                  {{ module.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-fab class="btn-add" (click)="createStory(selectedModuleId)">
               <i class="fas fa-plus"></i>
             </button>
             New Story
